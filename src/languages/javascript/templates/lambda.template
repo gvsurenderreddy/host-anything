@@ -1,0 +1,18 @@
+'use strict';
+
+// Require Logic
+var <%=moduleName%> = require('./<%=entryPointFilePath%>');
+
+// Lambda Handler
+module.exports.handler = function(event, context) {
+
+  var __handler = (<%=entryPointCode%>)(<%=moduleName%>);
+  try {
+    var response = __handler(
+      <% print(entryPointArgNames.map(function(argName) { return 'event.' + argName; }).join(', \n')) %>
+    );
+  } catch (exception) {
+    return context.fail(exception);
+  }
+  return context.succeed(response);
+};
